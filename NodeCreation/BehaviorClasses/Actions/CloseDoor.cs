@@ -1,4 +1,5 @@
 ﻿using NodeCreation.Enums;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses.Actions
 {
@@ -10,6 +11,10 @@ namespace NodeCreation.BehaviorClasses.Actions
             this.State = (int)Enums.StateEnum.Init;
 
         }
+
+        [JsonPropertyName("type")]
+        public override string Type => "ActionCloseDoor";
+
         public override int Tick()
         {
             Console.WriteLine("close door");

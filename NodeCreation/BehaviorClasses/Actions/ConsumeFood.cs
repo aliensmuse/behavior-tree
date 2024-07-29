@@ -1,10 +1,14 @@
 ﻿using NodeCreation.Enums;
 using NodeCreation.ProgramClasses;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses.Actions
 {
     public class ConsumeFood : Node
     {
+        [JsonPropertyName("type")]
+        public override string Type => "ActionConsumeFood";
+
         public override void Init()
         {
             Console.WriteLine("Consume Food Action Init");

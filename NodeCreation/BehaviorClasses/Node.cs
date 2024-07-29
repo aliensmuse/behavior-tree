@@ -1,4 +1,5 @@
 ﻿using NodeCreation.Enums;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses
 {
@@ -11,6 +12,8 @@ namespace NodeCreation.BehaviorClasses
         public abstract void Init();
 
         public abstract int Tick();
-
+       
+        [JsonPropertyName("type")]
+        public abstract string Type { get; }
     }
 }

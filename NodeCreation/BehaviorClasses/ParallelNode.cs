@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using NodeCreation.Enums;
 
 namespace NodeCreation.BehaviorClasses
 {
     public class ParallelNode : Node
     {
-        public List<Node>? _nodes;
+        [JsonPropertyName("_children")]
+        public List<Node>? _children;
+        
         private int successThreshold = 1;
         private int failRegister = 0;
         private int successRegister = 0;
 
+        [JsonPropertyName("type")]
+        public override string Type => "ParallelNode";
+
         public ParallelNode()
         {
-            _nodes = new List<Node>();
+            _children = new List<Node>();
 
         }
 
         public ParallelNode(int successThreshold)
         {
-            _nodes = new List<Node>();
+            _children = new List<Node>();
            
             this.successThreshold = successThreshold;
 
@@ -35,9 +41,9 @@ namespace NodeCreation.BehaviorClasses
             failRegister = 0;
             successRegister = 0;
 
-            for(int index =0; index < _nodes.Count; index++)
+            for(int index =0; index < _children.Count; index++)
             {
-                _nodes[index].Init();
+                _children[index].Init();
             }
 
         }
@@ -46,13 +52,13 @@ namespace NodeCreation.BehaviorClasses
         {
             // a single Tick will Tick Each Node if in INIT or RUNNING state
 
-            for (int index = 0; index < _nodes.Count; index++)
+            for (int index = 0; index < _children.Count; index++)
             {
                 
                 // Check if node is still running to tick again
-                if ( (_nodes[index].State == (int)StateEnum.Running) || (_nodes[index].State == (int)StateEnum.Init) )
+                if ( (_children[index].State == (int)StateEnum.Running) || (_children[index].State == (int)StateEnum.Init) )
                 {
-                    var state = _nodes[index].Tick();
+                    var state = _children[index].Tick();
                     if (state == (int)StateEnum.Success) successRegister++;
                     if (state == (int)StateEnum.Fail) failRegister++;
                 }
@@ -61,7 +67,7 @@ namespace NodeCreation.BehaviorClasses
                 
             }
 
-            if ( (successRegister+failRegister) < (_nodes.Count+1) )
+            if ( (successRegister+failRegister) < (_children.Count+1) )
             {
                 this.State = (int)StateEnum.Running;
             }

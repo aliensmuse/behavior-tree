@@ -1,9 +1,13 @@
 ﻿using NodeCreation.Enums;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses.Actions
 {
     public class OpenDoor : Node
     {
+        [JsonPropertyName("type")]
+        public override string Type => "ActionOpenDoor";
+
         public override void Init()
         {
             Console.WriteLine("Action Init");

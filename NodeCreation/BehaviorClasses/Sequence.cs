@@ -1,25 +1,32 @@
 ﻿using NodeCreation.Enums;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses
 {
     public class Sequence : Node
     {
-        public List<Node>? _nodes;
+        [JsonPropertyName("_children")]
+        public List<Node>? _children;
+
         private int _nodeCount = 0;
         private int _nodePosition = 0;
 
         public Sequence()
         {
-            _nodes = new List<Node>();
+            _children = new List<Node>();
         }
+
+        [JsonPropertyName("type")]
+        public override string Type => "SequenceNode";
+
         public override void Init()
         {
             Console.WriteLine("Sequence Init ");
             this.State = (int)Enums.StateEnum.Init;
-            this._nodeCount = _nodes.Count;
+            this._nodeCount = _children.Count;
             this._nodePosition = 0;
 
-            foreach (var node in _nodes)
+            foreach (var node in _children)
             {
                 node.Init();
             }
@@ -35,7 +42,7 @@ namespace NodeCreation.BehaviorClasses
             // if the Sequence is RUNNING then check its children _nodes
             if (this.State == (int)Enums.StateEnum.Running)
             {
-                var childNode = _nodes[this._nodePosition];
+                var childNode = _children[this._nodePosition];
 
                 var nodeState = childNode.Tick();
 

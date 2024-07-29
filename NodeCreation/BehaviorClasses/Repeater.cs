@@ -1,6 +1,6 @@
 ﻿using NodeCreation.Enums;
 using System;
-
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses
 {
@@ -11,7 +11,8 @@ namespace NodeCreation.BehaviorClasses
      */
     public class Repeater : Node
     {
-        public Node? _node { get; set; }
+        [JsonPropertyName("_child")]
+        public Node? _child { get; set; }
 
         public Repeater()
         {
@@ -24,16 +25,19 @@ namespace NodeCreation.BehaviorClasses
             this.State = (int)Enums.StateEnum.Init;
             
             
-            if (_node is not null) _node.Init();
+            if (_child is not null) _child.Init();
 
         }
+       
+        [JsonPropertyName("type")]
+        public override string Type => "RepeaterNode";
 
         public override int Tick()
         {
-            if (_node is not null)
+            if (_child is not null)
             {
                 if (this.State == (int)StateEnum.Init) { this.State = (int)StateEnum.Running; }
-                var nodeState = _node.Tick();
+                var nodeState = _child.Tick();
 
                 if (nodeState != (int)StateEnum.Running)
                 {
@@ -44,7 +48,7 @@ namespace NodeCreation.BehaviorClasses
                     else
                     {
                         // Repeat the node structure by restarting it
-                        _node.Init();
+                        _child.Init();
 
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using NodeCreation.Enums;
 using NodeCreation.ProgramClasses;
 
@@ -8,6 +9,8 @@ namespace NodeCreation.BehaviorClasses.Actions
     public class Look : Node
     {
 
+        [JsonPropertyName("type")]
+        public override string Type => "ActionLook";
 
         public override void Init()
         {

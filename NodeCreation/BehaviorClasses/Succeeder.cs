@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NodeCreation.BehaviorClasses
@@ -20,6 +21,10 @@ namespace NodeCreation.BehaviorClasses
 
             this.State = (int)StateEnum.Init;
         }
+
+        [JsonPropertyName("type")]
+        public override string Type => "SucceederNode";
+
         public override void Init()
         {
             Console.WriteLine("Succeeder Init Tick");

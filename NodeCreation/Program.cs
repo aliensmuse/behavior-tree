@@ -2,7 +2,7 @@
 using NodeCreation.BehaviorClasses;
 using NodeCreation.BehaviorClasses.Actions;
 using NodeCreation.ProgramClasses;
-
+using System.Text.Json;
 
 Dictionary<string, string> ourDict = new();
 
@@ -24,29 +24,33 @@ Succeeder suc = new();
 
 /*** BEGIN Complex Behavior from defining leaf _nodes first and ending in the top node ROOT ***/
 // Create a behavior of entering into an area - looking around, opening a door IF it exists, and closing a door
-lookSeq._nodes.Add(new Look());
-lookSeq._nodes.Add(new OpenDoor());
-lookSeq._nodes.Add(new CloseDoor());
+lookSeq._children.Add(new Look());
+lookSeq._children.Add(new OpenDoor());
+lookSeq._children.Add(new CloseDoor());
 
 // Associate the look/open/close behavior with a Succeeder (regardles of the outcome this branch succeeds)
 suc._node = lookSeq;
 
 
-moveSeq._nodes.Add(suc);
-moveSeq._nodes.Add(new Walk());
+moveSeq._children.Add(suc);
+moveSeq._children.Add(new Walk());
 
-rep._node = moveSeq;
-para._nodes.Add(rep);
-rep2._node = new ConsumeFood();
-para._nodes.Add(rep2);
+rep._child = moveSeq;
+para._children.Add(rep);
+rep2._child = new ConsumeFood();
+para._children.Add(rep2);
 
-root.node = para;
+root._child = para;
+
+string filePath = "behaviorTree.json";
+BehaviorTreeSerializer.SerializeTree(root, filePath);
+
 /***** END Complex Behavior ******/
 
 
 // associate our data whiteboard so all _nodes
 // can access the data and manipulate it
-root.SetWhiteboard(ourDict);
+ root.SetWhiteboard(ourDict);
 
 root.Init();
 root.Tick();

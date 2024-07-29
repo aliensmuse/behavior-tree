@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using NodeCreation.Enums;
 
 
@@ -7,9 +8,8 @@ namespace NodeCreation.BehaviorClasses
 {
     public class Root : Node
     {
-        public Node? node { get; set; }
-
-        
+        [JsonPropertyName("_child")]
+        public Node? _child { get; set; }
 
         public Root()
         {
@@ -17,13 +17,17 @@ namespace NodeCreation.BehaviorClasses
             this.State = (int)StateEnum.Init;
             WhiteBoard = new Dictionary<string, string>();
         }
+
+        [JsonPropertyName("type")]
+        public override string Type => "RootNode";
+
         public override void Init()
         {
             Console.WriteLine("Root Init Tick");
             this.State = (int)StateEnum.Init;
 
 
-            if (node is not null) node.Init();
+            if (_child is not null) _child.Init();
 
         }
         public  Dictionary<string,string> GetWhiteboard ()
@@ -40,7 +44,7 @@ namespace NodeCreation.BehaviorClasses
         {
 
 
-            return (int)node.Tick();
+            return (int)_child.Tick();
         }
     }
 }

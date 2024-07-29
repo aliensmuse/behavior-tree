@@ -1,12 +1,15 @@
 ﻿using NodeCreation.Enums;
 using NodeCreation.ProgramClasses;
+using System.Text.Json.Serialization;
 
 namespace NodeCreation.BehaviorClasses.Actions
 {
     public class Walk : Node
     {
-    
-        
+
+        [JsonPropertyName("type")]
+        public override string Type => "ActionWalk";
+
         public override void Init()
         {
             Console.WriteLine("Action Init");
